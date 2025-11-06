@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Toko Buku 📚</title>
+    <!-- Hubungkan CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Tambahkan ikon (opsional) -->
+    <link rel="icon" href="img/book.png" type="image/png">
+</head>
+<body>
+
+    <!-- Halaman Login -->
+    <div class="login-page">
+        <div class="login-container">
+            <h2>Login Toko Buku 📚</h2>
+
+            <!-- Form Login -->
+            <form id="loginForm" onsubmit="return false;">
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="user@example.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Masukkan password" required>
+                </div>
+
+                <button class="btn btn-primary" onclick="login()">Login</button>
+
+                <div class="login-footer">
+                    <button class="btn-link" onclick="bukaModal('modal-daftar')">Daftar</button>
+                    <button class="btn-link" onclick="bukaModal('modal-lupa')">Lupa Password?</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Daftar -->
+    <div id="modal-daftar" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="tutupModal('modal-daftar')">&times;</span>
+            <h3>Form Pendaftaran</h3>
+            <p>Fitur ini hanya simulasi, tidak tersambung ke server.</p>
+            <div class="input-group">
+                <label>Nama Lengkap</label>
+                <input type="text" placeholder="Masukkan nama anda">
+            </div>
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" placeholder="Masukkan email anda">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" placeholder="Buat password">
+            </div>
+            <button class="btn btn-primary" onclick="tutupModal('modal-daftar')">Daftar</button>
+        </div>
+    </div>
+
+    <!-- Modal Lupa Password -->
+    <div id="modal-lupa" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="tutupModal('modal-lupa')">&times;</span>
+            <h3>Lupa Password</h3>
+            <p>Masukkan email anda untuk reset password (simulasi).</p>
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" placeholder="user@example.com">
+            </div>
+            <button class="btn btn-primary" onclick="tutupModal('modal-lupa')">Kirim</button>
+        </div>
+    </div>
+
+    <!-- Import Data dan Script -->
+    <script src="js/data.js"></script>
+    <script>
+        // --- Fungsi Login ---
+        function login() {
+            let email = document.getElementById("email").value.trim();
+            let password = document.getElementById("password").value.trim();
+
+            let pengguna = dataPengguna.find(u => u.email === email && u.password === password);
+
+            if (pengguna) {
+                alert("Login berhasil! Selamat datang, " + pengguna.nama);
+                localStorage.setItem("penggunaAktif", JSON.stringify(pengguna));
+                window.location.href = "dashboard.html";
+            } else {
+                alert("Email atau password yang anda masukkan salah!");
+            }
+        }
+
+        // --- Modal Function ---
+        function bukaModal(id) {
+            document.getElementById(id).style.display = "block";
+        }
+
+        function tutupModal(id) {
+            document.getElementById(id).style.display = "none";
+        }
+
+        // Tutup modal jika klik di luar area modal
+        window.onclick = function(event) {
+            let daftarModal = document.getElementById("modal-daftar");
+            let lupaModal = document.getElementById("modal-lupa");
+            if (event.target === daftarModal) tutupModal('modal-daftar');
+            if (event.target === lupaModal) tutupModal('modal-lupa');
+        }
+
+ // --- Menampilkan data dari localStorage ---
+    function tampilkanHistory() {
+      const tbody = document.getElementById("historyTable");
+      const emptyMsg = document.getElementById("emptyHistory");
+      const history = JSON.parse(localStorage.getItem("riwayatTransaksi")) || [];
+
+      tbody.innerHTML = "";
+      if (history.length === 0) {
+        emptyMsg.style.display = "block";
+        return;
+      } else {
+        emptyMsg.style.display = "none";
+      }
+
+      history.forEach((item, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td style="padding:10px;">${index + 1}</td>
+          <td style="padding:10px;">${item.nama}</td>
+          <td style="padding:10px;">${item.buku}</td>
+          <td style="padding:10px;">${item.jumlah}</td>
+          <td style="padding:10px;">${item.metode}</td>
+          <td style="padding:10px;">Rp ${item.total.toLocaleString("id-ID")}</td>
+          <td style="padding:10px;">${item.tanggal}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    tampilkanHistory();
+
+
+    </script>
+
+</body>
+</html>

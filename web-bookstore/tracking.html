@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemesanan Buku 🛒</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="dashboard-page">
+
+        <!-- Header -->
+        <header class="header">
+            <h1>🛒 Pemesanan Buku</h1>
+            <button class="btn btn-logout" onclick="kembaliDashboard()">🏠 Dashboard</button>
+        </header>
+
+        <main class="content">
+
+            <!-- Form Pemesanan -->
+            <div class="filter-container">
+                <h3>Data Pemesan</h3>
+                <div class="filter-group">
+                    <input type="text" id="namaPemesan" placeholder="Nama Pemesan" required>
+                    <input type="email" id="emailPemesan" placeholder="Email Pemesan" required>
+                </div>
+                <div class="filter-group">
+                    <input type="text" id="alamatPemesan" placeholder="Alamat Pengiriman" required>
+                    <select id="metodeBayar">
+                        <option value="">Pilih Metode Pembayaran</option>
+                        <option value="Transfer Bank">Transfer Bank</option>
+                        <option value="COD">COD (Bayar di Tempat)</option>
+                        <option value="E-Wallet">E-Wallet</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Pilih Buku -->
+            <div class="filter-container">
+                <h3>Pilih Buku</h3>
+                <div class="filter-group">
+                    <select id="bukuSelect" onchange="updateHarga()">
+                        <option value="">-- Pilih Buku --</option>
+                    </select>
+                    <input type="number" id="jumlah" placeholder="Jumlah" min="1" value="1" onchange="updateHarga()">
+                </div>
+                <p id="hargaSatuan">Harga Satuan: -</p>
+                <p id="totalHarga"><strong>Total Harga:</strong> Rp 0</p>
+                <button class="btn btn-primary" onclick="buatPesanan()">Buat Pesanan</button>
+            </div>
+
+            <!-- Pesan Status -->
+            <div id="statusPesanan" class="status-message" style="display: none;">
+                Pesanan berhasil dibuat! 🎉 Terima kasih telah berbelanja di toko kami.
+            </div>
+
+        </main>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script>
+        const bukuSelect = document.getElementById("bukuSelect");
+        const hargaSatuan = document.getElementById("hargaSatuan");
+        const totalHarga = document.getElementById("totalHarga");
+        const statusPesanan = document.getElementById("statusPesanan");
+
+        // --- Isi dropdown buku dari data.js ---
+        function isiDropdown() {
+            dataKatalogBuku.forEach(buku => {
+                const opt = document.createElement("option");
+                opt.value = buku.kodeBarang;
+                opt.textContent = `${buku.namaBarang} (${buku.harga})`;
+                opt.setAttribute("data-harga", buku.harga.replace(/[^\d]/g, "")); // ambil angka dari "Rp ..."
+                bukuSelect.appendChild(opt);
+            });
+        }
+
+        // --- Update harga total berdasarkan pilihan ---
+        function updateHarga() {
+            const selected = bukuSelect.options[bukuSelect.selectedIndex];
+            if (!selected || !selected.value) {
+                hargaSatuan.textContent = "Harga Satuan: -";
+                totalHarga.innerHTML = "<strong>Total Harga:</strong> Rp 0";
+                return;
+            }
+
+            const harga = parseInt(selected.getAttribute("data-harga")) || 0;
+            const jumlah = parseInt(document.getElementById("jumlah").value) || 1;
+            const total = harga * jumlah;
+
+            hargaSatuan.textContent = `Harga Satuan: Rp ${harga.toLocaleString("id-ID")}`;
+            totalHarga.innerHTML = `<strong>Total Harga:</strong> Rp ${total.toLocaleString("id-ID")}`;
+        }
+
+        // --- Fungsi buat pesanan ---
+        function buatPesanan() {
+            const nama = document.getElementById("namaPemesan").value.trim();
+            const email = document.getElementById("emailPemesan").value.trim();
+            const alamat = document.getElementById("alamatPemesan").value.trim();
+            const metode = document.getElementById("metodeBayar").value;
+            const bukuDipilih = bukuSelect.value;
+            const jumlah = document.getElementById("jumlah").value;
+
+            if (!nama || !email || !alamat || !metode || !bukuDipilih) {
+                alert("Harap isi semua data pemesan dan pilihan buku!");
+                return;
+            }
+
+            alert(`Pesanan atas nama ${nama} berhasil dibuat!\nBuku: ${bukuDipilih}\nJumlah: ${jumlah}\nMetode: ${metode}`);
+            statusPesanan.style.display = "block";
+
+            // Reset form
+            document.getElementById("namaPemesan").value = "";
+            document.getElementById("emailPemesan").value = "";
+            document.getElementById("alamatPemesan").value = "";
+            document.getElementById("metodeBayar").value = "";
+            bukuSelect.value = "";
+            document.getElementById("jumlah").value = 1;
+            updateHarga();
+        }
+
+        function kembaliDashboard() {
+            window.location.href = "dashboard.html";
+        }
+
+        // Jalankan saat halaman dimuat
+        isiDropdown();
+    </script>
+
+</body>
+</html>

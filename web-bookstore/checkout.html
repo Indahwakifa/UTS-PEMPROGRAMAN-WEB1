@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Pemesanan Buku 🛒</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <h1>🛒 Checkout Pemesanan Buku</h1>
+        <nav>
+            <ul style="list-style:none; display:flex; gap:15px;">
+                <li><a href="dashboard.html" class="btn-link">🏠 Dashboard</a></li>
+                <li><a href="stok.html" class="btn-link">📚 Katalog Buku</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="content">
+        <h2>🧾 Detail Item Dipesan</h2>
+        <table style="width:100%; border-collapse:collapse; margin-bottom:20px;">
+            <thead style="background:#007bff; color:white;">
+                <tr>
+                    <th style="padding:10px;">Buku</th>
+                    <th style="padding:10px;">Jumlah</th>
+                    <th style="padding:10px;">Harga Satuan</th>
+                    <th style="padding:10px;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody id="checkout-details" style="background:white;">
+                <tr>
+                    <td id="checkout-item-name" style="padding:10px;"></td>
+                    <td style="padding:10px;">
+                        <input type="number" id="jumlah-pesan" value="1" min="1" style="width:60px;" onchange="hitungTotal()">
+                    </td>
+                    <td id="checkout-item-harga" style="padding:10px;"></td>
+                    <td id="checkout-subtotal" style="padding:10px;"></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <hr>
+
+        <form id="pemesanan-form">
+            <h2>Informasi Pemesan & Pembayaran</h2>
+            
+            <div class="input-group">
+                <label for="nama-pemesan">Nama Lengkap:</label>
+                <input type="text" id="nama-pemesan" required>
+            </div>
+
+            <div class="input-group">
+                <label for="alamat">Alamat Pengiriman:</label>
+                <input type="text" id="alamat" required>
+            </div>
+
+            <div class="input-group">
+                <label for="no-hp">Nomor HP:</label>
+                <input type="text" id="no-hp" required>
+            </div>
+
+            <div class="input-group">
+                <label for="metode-bayar">Metode Pembayaran:</label>
+                <select id="metode-bayar" required>
+                    <option value="">-- Pilih Metode Pembayaran --</option>
+                    <option value="Transfer Bank">Transfer Bank</option>
+                    <option value="COD">COD (Cash on Delivery)</option>
+                </select>
+            </div>
+
+            <p style="margin-top: 20px;">💰 <strong>Total Keseluruhan:</strong> 
+                <span id="total-pembayaran" style="color: var(--primary-color); font-weight:bold;">Rp 0</span>
+            </p>
+
+            <button type="submit" class="btn btn-primary" style="margin-top:15px;">Konfirmasi Pemesanan 🛒</button>
+        </form>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script>
+        let bukuDipilih = dataKatalogBuku[0]; // default pilih buku pertama
+        let harga = parseInt(bukuDipilih.harga.replace(/[^\d]/g, ''));
+        const namaEl = document.getElementById("checkout-item-name");
+        const hargaEl = document.getElementById("checkout-item-harga");
+        const subtotalEl = document.getElementById("checkout-subtotal");
+        const totalEl = document.getElementById("total-pembayaran");
+        const jumlahInput = document.getElementById("jumlah-pesan");
+
+        // tampilkan data buku awal
+        function tampilkanBuku() {
+            namaEl.textContent = bukuDipilih.namaBarang;
+            hargaEl.textContent = "Rp " + harga.toLocaleString("id-ID");
+            hitungTotal();
+        }
+
+        // hitung total
+        function hitungTotal() {
+            const jumlah = parseInt(jumlahInput.value) || 1;
+            const subtotal = harga * jumlah;
+            subtotalEl.textContent = "Rp " + subtotal.toLocaleString("id-ID");
+            totalEl.textContent = "Rp " + subtotal.toLocaleString("id-ID");
+        }
+
+        // simpan pesanan ke localStorage (riwayat transaksi)
+        document.getElementById("pemesanan-form").addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const nama = document.getElementById("nama-pemesan").value.trim();
+            const alamat = document.getElementById("alamat").value.trim();
+            const nohp = document.getElementById("no-hp").value.trim();
+            const metode = document.getElementById("metode-bayar").value;
+            const jumlah = parseInt(jumlahInput.value);
+            const total = harga * jumlah;
+
+            if (!nama || !alamat || !nohp || !metode) {
+                alert("Harap lengkapi semua data pemesan!");
+                return;
+            }
+
+            // buat objek transaksi baru
+            const transaksi = {
+                nama,
+                buku: bukuDipilih.namaBarang,
+                jumlah,
+                metode,
+                total,
+                tanggal: new Date().toLocaleString("id-ID"),
+            };
+
+            let riwayat = JSON.parse(localStorage.getItem("riwayatTransaksi")) || [];
+            riwayat.push(transaksi);
+            localStorage.setItem("riwayatTransaksi", JSON.stringify(riwayat));
+
+            alert(`✅ Pesanan berhasil dibuat atas nama ${nama}.\nTotal: Rp ${total.toLocaleString("id-ID")}`);
+            window.location.href = "history.html";
+        });
+
+        tampilkanBuku();
+    </script>
+</body>
+</html>

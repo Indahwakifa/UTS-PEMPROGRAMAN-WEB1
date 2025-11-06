@@ -1,0 +1,467 @@
+/* Import Google Font (Poppins) untuk tampilan modern dan bersih */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+/* Variabel CSS untuk kemudahan kustomisasi */
+:root {
+    --primary-color: #680606; /* maroon (Warna utama) */
+    --secondary-color: #6c757d; /* Abu-abu (Warna sekunder/teks ringan) */
+    --background-color: #a5a1a1; /* Latar belakang halaman */
+    --card-background: #ceadad; /* Latar belakang kartu/kontainer */
+    --text-color: #343a40; /* Teks gelap */
+    --border-radius: 8px;
+    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Reset dan Pengaturan Dasar */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+/* Container utama untuk halaman yang membutuhkan margin */
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto; /* Tengah di layar besar */
+}
+
+/* --- Elemen Umum (Buttons) --- */
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #601414;
+    transform: translateY(-1px);
+}
+
+.btn-link {
+    background: none;
+    color: var(--primary-color);
+    padding: 5px;
+    font-weight: 400;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+}
+
+/* --- Halaman Login (index.html) --- */
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #e9ecef;
+}
+
+.login-container {
+    background: var(--card-background);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    width: 100%;
+    max-width: 350px;
+    text-align: center;
+}
+
+.login-container h2 {
+    margin-bottom: 25px;
+    color: var(--primary-color);
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.login-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* --- Dashboard (dashboard.html) --- */
+.dashboard-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+.btn-logout {
+    background-color: white;
+    color: var(--primary-color);
+    padding: 8px 12px;
+}
+
+.nav-menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.nav-item {
+    background-color: var(--card-background);
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.nav-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.nav-item .icon {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.nav-item.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #e9ecef;
+}
+
+/* --- Modal/Pop-up --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: var(--card-background);
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    width: 80%;
+    max-width: 400px;
+    position: relative;
+    text-align: center;
+}
+
+.close-btn {
+    color: var(--secondary-color);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* ==================================== */
+/* --- Tracking Styling (tracking.html) --- */
+/* ==================================== */
+.tracking-form-container {
+    padding: 20px;
+    margin-bottom: 30px;
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+}
+
+.tracking-result {
+    padding: 20px;
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+}
+
+.tracking-header {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.tracking-header h3 {
+    margin-top: 0;
+    color: var(--primary-color);
+}
+
+.tracking-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.info-item {
+    padding: 10px;
+    border-left: 3px solid var(--primary-color);
+    background-color: #f1f8ff;
+    border-radius: 4px;
+}
+
+.info-item strong {
+    display: block;
+    font-size: 0.9em;
+    color: var(--secondary-color);
+}
+
+.status-indicator {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: 600;
+    display: inline-block;
+    color: white;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+
+/* Warna Status */
+.status-indicator.dikirim {
+    background-color: #ffc107;
+}
+
+.status-indicator.terkirim {
+    background-color: #28a745;
+}
+
+.status-indicator.gagal {
+    background-color: #dc3545;
+}
+
+.alert-error {
+    padding: 15px;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: var(--border-radius);
+}
+
+/* Styling Progress/Timeline */
+.tracking-timeline {
+    margin-top: 25px;
+    border-left: 2px dashed #ccc;
+    padding-left: 20px;
+    position: relative;
+}
+
+.timeline-event {
+    position: relative;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.timeline-event::before {
+    content: '';
+    position: absolute;
+    left: -27px;
+    top: 10px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    border: 2px solid white;
+    z-index: 10;
+}
+
+.timeline-event:first-child::before {
+    background-color: #28a745;
+}
+
+.event-time {
+    font-size: 0.8em;
+    color: var(--secondary-color);
+    font-weight: 400;
+    margin-bottom: 3px;
+}
+
+/* ==================================== */
+/* --- Stok/Katalog Styling (stok.html) --- */
+/* ==================================== */
+.filter-container {
+    padding: 20px;
+    margin-bottom: 30px;
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+}
+
+.filter-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.filter-group input, 
+.filter-group select {
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 1em;
+    flex-grow: 1;
+}
+
+/* Tampilan Katalog menggunakan Grid/Card */
+.katalog-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.buku-card {
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s;
+}
+
+.buku-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-cover {
+    height: 200px;
+    background-color: #e9ecef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.card-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-details {
+    padding: 15px;
+    flex-grow: 1;
+}
+
+.card-details h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: var(--primary-color);
+    font-size: 1.1em;
+}
+
+.card-details p {
+    margin-bottom: 8px;
+    font-size: 0.9em;
+}
+
+.stok-info {
+    font-weight: 600;
+}
+
+.card-footer {
+    padding: 15px;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+}
+
+.card-footer .harga {
+    font-size: 1.2em;
+    font-weight: 700;
+}
+
+.btn-beli {
+    padding: 8px 15px;
+}
+
+.status-message {
+    padding: 15px;
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    border-radius: var(--border-radius);
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+    .filter-group {
+        flex-direction: column;
+    }
+
+    .tracking-info {
+        grid-template-columns: 1fr;
+    }
+}

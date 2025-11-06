@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stok & Katalog Buku 📚</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="dashboard-page">
+
+        <!-- Header -->
+        <header class="header">
+            <h1>📚 Informasi Stok & Katalog Buku</h1>
+            <button class="btn btn-logout" onclick="kembaliDashboard()">🏠 Dashboard</button>
+        </header>
+
+        <!-- Konten Utama -->
+        <main class="content">
+
+            <!-- Filter & Tambah Buku -->
+            <div class="filter-container">
+                <h3>Tambah Buku Baru</h3>
+                <div class="filter-group">
+                    <input type="text" id="kode" placeholder="Kode Buku (misal: ABC123)">
+                    <input type="text" id="nama" placeholder="Nama Buku">
+                    <input type="text" id="jenis" placeholder="Jenis Buku">
+                    <input type="number" id="edisi" placeholder="Edisi">
+                    <input type="number" id="stok" placeholder="Stok">
+                    <input type="text" id="harga" placeholder="Harga (contoh: Rp 100.000)">
+                    <button class="btn btn-primary" onclick="tambahBuku()">+ Tambah</button>
+                </div>
+            </div>
+
+            <!-- Katalog Buku -->
+            <div id="katalog" class="katalog-container">
+                <!-- Data buku akan diisi otomatis oleh JavaScript -->
+            </div>
+
+            <!-- Pesan jika stok kosong -->
+            <div id="status" class="status-message" style="display: none;">
+                Tidak ada buku yang tersedia.
+            </div>
+        </main>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script>
+        const container = document.getElementById("katalog");
+        const statusMsg = document.getElementById("status");
+
+        // --- Fungsi Menampilkan Katalog Buku ---
+        function tampilkanKatalog() {
+            container.innerHTML = "";
+
+            if (dataKatalogBuku.length === 0) {
+                statusMsg.style.display = "block";
+                return;
+            } else {
+                statusMsg.style.display = "none";
+            }
+
+            dataKatalogBuku.forEach(buku => {
+                const card = document.createElement("div");
+                card.className = "buku-card";
+                card.innerHTML = `
+                    <div class="card-cover">
+                        <img src="${buku.cover}" alt="${buku.namaBarang}">
+                    </div>
+                    <div class="card-details">
+                        <h4>${buku.namaBarang}</h4>
+                        <p><strong>Kode:</strong> ${buku.kodeBarang}</p>
+                        <p><strong>Jenis:</strong> ${buku.jenisBarang}</p>
+                        <p><strong>Edisi:</strong> ${buku.edisi}</p>
+                        <p class="stok-info">Stok: ${buku.stok}</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="harga">${buku.harga}</span>
+                        <button class="btn btn-primary btn-beli" onclick="alert('Anda memilih ${buku.namaBarang}')">Beli</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- Fungsi Menambah Buku Baru ---
+        function tambahBuku() {
+            const kode = document.getElementById("kode").value.trim();
+            const nama = document.getElementById("nama").value.trim();
+            const jenis = document.getElementById("jenis").value.trim();
+            const edisi = document.getElementById("edisi").value.trim();
+            const stok = document.getElementById("stok").value.trim();
+            const harga = document.getElementById("harga").value.trim();
+
+            if (!kode || !nama || !jenis || !edisi || !stok || !harga) {
+                alert("Semua field harus diisi!");
+                return;
+            }
+
+            const bukuBaru = {
+                kodeBarang: kode,
+                namaBarang: nama,
+                jenisBarang: jenis,
+                edisi: edisi,
+                stok: parseInt(stok),
+                harga: harga,
+                cover: "img/default_book.jpg"
+            };
+
+            dataKatalogBuku.push(bukuBaru);
+            tampilkanKatalog();
+
+            // Kosongkan input
+            document.querySelectorAll(".filter-group input").forEach(input => input.value = "");
+        }
+
+        // --- Kembali ke Dashboard ---
+        function kembaliDashboard() {
+            window.location.href = "dashboard.html";
+        }
+
+        // Tampilkan data awal
+        tampilkanKatalog();
+    </script>
+
+</body>
+</html>
