@@ -88,4 +88,4 @@ tugas-uts-web1/
 
 ## Link Youtube
 
-[Tonton Video Presentasi UTS Pemrograman Web di YouTube](https://youtu.be/D7WiUBZ2s-A) 
+[Tonton Video Presentasi UTS Pemrograman Web di YouTube](https://youtu.be/L6vgig7XYn4?si=bnvmjgIrKsgPewT7) 
